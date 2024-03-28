@@ -10,8 +10,13 @@ import (
 
 func main() {
 	N := 100
-	if len(os.Args) > 1 {
-		n, err := strconv.Atoi(os.Args[1])
+	if len(os.Args) < 2 {
+		fmt.Println("Usage: go run client.go <server-address> [N]")
+		return
+	}
+	address := os.Args[1]
+	if len(os.Args) > 2 {
+		n, err := strconv.Atoi(os.Args[2])
 		if err != nil {
 			fmt.Println("Error parsing argument:", err)
 			return
@@ -19,7 +24,7 @@ func main() {
 		N = n
 	}
 
-	conn, err := net.Dial("tcp", "localhost:50001")
+	conn, err := net.Dial("tcp", address)
 	if err != nil {
 		fmt.Println("Error connecting:", err)
 		return
