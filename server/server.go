@@ -10,18 +10,20 @@ func handleConnection(conn net.Conn) {
 	defer conn.Close()
 	buffer := make([]byte, 1024)
 	message := "Hello, Client!"
-	_, err := conn.Read(buffer)
-	if err != nil {
-		if err != io.EOF {
-			fmt.Println("Error reading:", err)
+	for {
+		_, err := conn.Read(buffer)
+		if err != nil {
+			if err != io.EOF {
+				fmt.Println("Error reading:", err)
+			}
+			return
 		}
-		return
-	}
-	fmt.Println("Received message:", string(buffer))
-	_, err = conn.Write([]byte(message))
-	if err != nil {
-		fmt.Println("Error writing:", err)
-		return
+		fmt.Println("Received message:", string(buffer))
+		_, err = conn.Write([]byte(message))
+		if err != nil {
+			fmt.Println("Error writing:", err)
+			return
+		}
 	}
 }
 
